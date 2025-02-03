@@ -103,6 +103,7 @@
           let benefits = document.getElementById("benefits");
           let error = document.getElementById("errorid");
           let form = document.getElementById("formid");
+          let submitbutton = document.getElementById("submit");
           let gross_salary;
           let nhifContribution;
           let nssfcontribution;
@@ -114,128 +115,129 @@
           let benefitsValue; // Declare benefitsValue here
 
           function calculateGrossSalary(basicsalary, benefits) {
-              gross_salary = basicsalary + benefits;
-              return gross_salary;
+            gross_salary = basicsalary + benefits;
+            return gross_salary;
+          }
+
+          function findnhifcontribution(gross_salary) {
+            if (gross_salary <= 5999 || gross_salary >= 0) {
+              return (nhifContribution = 150);
+            } else if (gross_salary <= 7999) {
+              return (nhifContribution = 300);
+            } else if (gross_salary <= 11999) {
+              return (nhifContribution = 400);
+            } else if (gross_salary <= 14999) {
+              return (nhifContribution = 500);
+            } else if (gross_salary <= 19999) {
+              return (nhifContribution = 600);
+            } else if (gross_salary <= 24999) {
+              return (nhifContribution = 750);
+            } else if (gross_salary <= 29999) {
+              return (nhifContribution = 850);
+            } else if (gross_salary <= 34999) {
+              return (nhifContribution = 900);
+            } else if (gross_salary <= 39999) {
+              return (nhifContribution = 950);
+            } else if (gross_salary <= 44999) {
+              return (nhifContribution = 1000);
+            } else if (gross_salary <= 49999) {
+              return (nhifContribution = 1100);
+            } else if (gross_salary <= 59999) {
+              return (nhifContribution = 1200);
+            } else if (gross_salary <= 69999) {
+              return (nhifContribution = 1300);
+            } else if (gross_salary <= 79999) {
+              return (nhifContribution = 1400);
+            } else if (gross_salary <= 89999) {
+              return (nhifContribution = 1500);
+            } else if (gross_salary <= 99999) {
+              return (nhifContribution = 1600);
+            } else {
+              return (nhifContribution = 1700);
             }
+            // return nhifContribution;
+          }
 
-            function findnhifcontribution(gross_salary) {
-              if (gross_salary <= 5999 ) {
-                return (nhifContribution = 150);
-              } else if (gross_salary <= 7999) {
-                return (nhifContribution = 300);
-              } else if (gross_salary <= 11999) {
-                return (nhifContribution = 400);
-              } else if (gross_salary <= 14999) {
-                return (nhifContribution = 500);
-              } else if (gross_salary <= 19999) {
-                return (nhifContribution = 600);
-              } else if (gross_salary <= 24999) {
-                return (nhifContribution = 750);
-              } else if (gross_salary <= 29999) {
-                return (nhifContribution = 850);
-              } else if (gross_salary <= 34999) {
-                return (nhifContribution = 900);
-              } else if (gross_salary <= 39999) {
-                return (nhifContribution = 950);
-              } else if (gross_salary <= 44999) {
-                return (nhifContribution = 1000);
-              } else if (gross_salary <= 49999) {
-                return (nhifContribution = 1100);
-              } else if (gross_salary <= 59999) {
-                return (nhifContribution = 1200);
-              } else if (gross_salary <= 69999) {
-                return (nhifContribution = 1300);
-              } else if (gross_salary <= 79999) {
-                return (nhifContribution = 1400);
-              } else if (gross_salary <= 89999) {
-                return (nhifContribution = 1500);
-              } else if (gross_salary <= 99999) {
-                return (nhifContribution = 1600);
-              } else {
-                return (nhifContribution = 1700);
-              }
-              return nhifContribution;
-             }
-
-
-            function findnssfcontribution(gross_salary) {
-              if (gross_salary > 18000) {
-                nssfcontribution = 0.06 * 18000;
-              } else {
-                nssfcontribution = 0.06 * gross_salary;
-              }
-              return nssfcontribution;
+          function findnssfcontribution(gross_salary) {
+            if (gross_salary > 18000) {
+              nssfcontribution = 0.06 * 18000;
+            } else {
+              nssfcontribution = 0.06 * gross_salary;
             }
+            return nssfcontribution;
+          }
 
-            function findnhdfcontribution(gross_salary) {
-              nhdfcontribution = gross_salary * 0.015;
-              return nhdfcontribution;
-            }
+          function findnhdfcontribution(gross_salary) {
+            nhdfcontribution = gross_salary * 0.015;
+            return nhdfcontribution;
+          }
 
-            function findthetaxableincome(
-              gross_salary,
-              nssfcontribution,
-              nhifContribution,
-              nhdfcontribution
-            ) {
-              taxable_income =
-                gross_salary -
-                (nssfcontribution + nhifContribution + nhdfcontribution);
-              return taxable_income;
-            }
+          function findthetaxableincome(
+            gross_salary,
+            nssfcontribution,
+            nhifContribution,
+            nhdfcontribution
+          ) {
+            taxable_income =
+              gross_salary -
+              (nssfcontribution + nhifContribution + nhdfcontribution);
+            return taxable_income;
+          }
 
-            function findthepayee(taxable_income) {
-              let personal_relief = 2400;
-              if (taxable_income <= 24000) {
-                payeetax = taxable_income * 0.1;
-              } else if (taxable_income <= 24000 + 8333) {
-                payeetax = 24000 * 0.1 + (taxable_income - 24000) * 0.25;
-              } else if (taxable_income <= 24000 + 8333 + 467667) {
-                payeetax =
-                  24000 * 0.1 +
-                  8333 * 0.25 +
-                  (taxable_income - 24000 - 8333) * 0.3;
-              } else if (taxable_income <= 24000 + 8333 + 467667 + 300000) {
-                payeetax =
-                  24000 * 0.1 +
-                  8333 * 0.25 +
-                  467667 * 0.3 +
-                  (taxable_income - 24000 - 8333 - 467667) * 0.325;
-              } else {
-                payeetax =
-                  24000 * 0.1 +
-                  8333 * 0.25 +
-                  467667 * 0.3 +
-                  300000 * 0.325 +
-                  (taxable_income - 24000 - 8333 - 467667 - 300000) * 0.35;
-              }
-              payeetax -= personal_relief;
-              return payeetax;
+          function findthepayee(taxable_income) {
+            let personal_relief = 2400;
+            if (taxable_income <= 24000) {
+              payeetax = taxable_income * 0.1;
+            } else if (taxable_income <= 24000 + 8333) {
+              payeetax = 24000 * 0.1 + (taxable_income - 24000) * 0.25;
+            } else if (taxable_income <= 24000 + 8333 + 467667) {
+              payeetax =
+                24000 * 0.1 +
+                8333 * 0.25 +
+                (taxable_income - 24000 - 8333) * 0.3;
+            } else if (taxable_income <= 24000 + 8333 + 467667 + 300000) {
+              payeetax =
+                24000 * 0.1 +
+                8333 * 0.25 +
+                467667 * 0.3 +
+                (taxable_income - 24000 - 8333 - 467667) * 0.325;
+            } else {
+              payeetax =
+                24000 * 0.1 +
+                8333 * 0.25 +
+                467667 * 0.3 +
+                300000 * 0.325 +
+                (taxable_income - 24000 - 8333 - 467667 - 300000) * 0.35;
             }
+            payeetax -= personal_relief;
+            return payeetax;
+          }
 
-            function findTheNetsalary(
-              gross_salary,
-              nhdfcontribution,
-              nhifContribution,
-              nssfcontribution,
-              payeetax
-            ) {
-              netsalary =
-                gross_salary -
-                (nssfcontribution +
-                  nhdfcontribution +
-                  nhifContribution +
-                  payeetax);
-              return netsalary;
-            }
+          function findTheNetsalary(
+            gross_salary,
+            nhdfcontribution,
+            nhifContribution,
+            nssfcontribution,
+            payeetax
+          ) {
+            netsalary =
+              gross_salary -
+              (nssfcontribution +
+                nhdfcontribution +
+                nhifContribution +
+                payeetax);
+            return netsalary;
+          }
 
           basicsalary.addEventListener("input", function (e) {
             basicsalaryValue = parseFloat(e.target.value);
             console.log(typeof basicsalaryValue);
             if (isNaN(basicsalaryValue) || basicsalaryValue === "") {
+              submitbutton.disabled = true;
               error.innerHTML = "Invalid Basic Salary!";
             } else {
               error.innerHTML = " ";
+              submitbutton.disabled = false;
             }
           });
 
@@ -243,72 +245,83 @@
             benefitsValue = parseFloat(e.target.value); // Update benefitsValue here
             console.log(benefitsValue);
             if (isNaN(benefitsValue) || benefitsValue === "") {
+              submitbutton.disabled = true;
               error.innerHTML = "Invalid Benefits!";
             } else {
               error.innerHTML = " ";
+              submitbutton.disabled = false;
             }
           });
 
           form.addEventListener("submit", function (e) {
             e.preventDefault(); // Prevent default form submission
 
-            benefitsValue = parseFloat(document.getElementById("benefits").value); 
-            basicsalaryValue = parseFloat(document.getElementById("basic").value);
-            console.log("benefits and basic "+" "+ benefitsValue + " "+ basicsalaryValue)
-            gross_salary = calculateGrossSalary(basicsalaryValue, benefitsValue);
-            console.log("Gross salary is KES" + " " + gross_salary);
-            // Display the gross salary in the table
-            document.getElementById("displayline001").innerText = gross_salary;
-            
-            
+              benefitsValue = parseFloat(
+                document.getElementById("benefits").value
+              );
+              basicsalaryValue = parseFloat(
+                document.getElementById("basic").value
+              );
+              console.log(
+                "benefits and basic " +
+                  " " +
+                  benefitsValue +
+                  " " +
+                  basicsalaryValue
+              );
+              gross_salary = calculateGrossSalary(
+                basicsalaryValue,
+                benefitsValue
+              );
+              console.log("Gross salary is KES" + " " + gross_salary);
+              // Display the gross salary in the table
+              document.getElementById("displayline001").innerText =
+                gross_salary;
 
+              nhifContribution = findnhifcontribution(gross_salary);
+              console.log(
+                "N.H.I.F Contribution is KES" + " " + nhifContribution
+              );
+              document.getElementById("displayline005").innerText =
+                nhifContribution;
 
-            
+              nssfcontribution = findnssfcontribution(gross_salary);
+              console.log(
+                "N.S.S.F Contribution is KES" + " " + nssfcontribution
+              );
+              document.getElementById("displayline002").innerText =
+                nssfcontribution;
 
-            nhifContribution = findnhifcontribution(gross_salary);
-            console.log("N.H.I.F Contribution is KES" + " " + nhifContribution);
-            document.getElementById("displayline005").innerText = nhifContribution;
-            
-            
-            nssfcontribution = findnssfcontribution(gross_salary);
-            console.log("N.S.S.F Contribution is KES" + " " + nssfcontribution);
-            document.getElementById("displayline002").innerText = nssfcontribution;
+              nhdfcontribution = findnhdfcontribution(gross_salary);
+              console.log(
+                "N.H.D.F Contribution is KES" + " " + nhdfcontribution
+              );
+              document.getElementById("displayline003").innerText =
+                nhdfcontribution;
 
-            nhdfcontribution = findnhdfcontribution(gross_salary);
-            console.log("N.H.D.F Contribution is KES" + " " + nhdfcontribution);
-            document.getElementById("displayline003").innerText = nhdfcontribution;
+              taxable_income = findthetaxableincome(
+                gross_salary,
+                nssfcontribution,
+                nhifContribution,
+                nhdfcontribution
+              );
 
+              console.log("Taxable Income is KES" + " " + taxable_income);
 
+              payeetax = findthepayee(taxable_income);
+              console.log("Payee Tax is KES" + " " + payeetax);
+              document.getElementById("displayline004").innerText = payeetax;
 
-            
-            taxable_income = findthetaxableincome(
-              gross_salary,
-              nssfcontribution,
-              nhifContribution,
-              nhdfcontribution
-            );
+              netsalary = findTheNetsalary(
+                gross_salary,
+                nhdfcontribution,
+                nhifContribution,
+                nssfcontribution,
+                payeetax
+              );
 
-            console.log("Taxable Income is KES" + " " + taxable_income);
-
-          
-
-            payeetax = findthepayee(taxable_income);
-            console.log("Payee Tax is KES" + " " + payeetax);
-            document.getElementById("displayline004").innerText = payeetax;
-
-            
-            netsalary = findTheNetsalary(
-              gross_salary,
-              nhdfcontribution,
-              nhifContribution,
-              nssfcontribution,
-              payeetax
-            );
-
-            console.log("Net Salary is KES" + " " + netsalary);
-            document.getElementById("displayline006").innerText = netsalary;
-            
-            
+              console.log("Net Salary is KES" + " " + netsalary);
+              document.getElementById("displayline006").innerText = netsalary;
             
           });
         </script>
