@@ -163,7 +163,7 @@
         } else {
           return (nhifContribution = 1700);
         }
-        // return nhifContribution;
+        return nhifContribution;
       }
 
       function findnssfcontribution(gross_salary) {
@@ -189,7 +189,7 @@
         taxable_income =
           gross_salary -
           (nssfcontribution + nhifContribution + nhdfcontribution);
-        return taxable_income;
+        return parseFloat(taxable_income);
       }
 
       function findthepayee(taxable_income) {
@@ -283,22 +283,22 @@
           console.log("Gross salary is KES" + " " + gross_salary);
           // Display the gross salary in the table
           document.getElementById("displayline001").innerText =
-            gross_salary.toFixed(2);
+            gross_salary.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
           nhifContribution = findnhifcontribution(gross_salary);
           console.log("N.H.I.F Contribution is KES" + " " + nhifContribution);
           document.getElementById("displayline005").innerText =
-            nhifContribution.toFixed(2);
+            nhifContribution.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
           nssfcontribution = findnssfcontribution(gross_salary);
           console.log("N.S.S.F Contribution is KES" + " " + nssfcontribution);
           document.getElementById("displayline002").innerText =
-            nssfcontribution.toFixed(2);
+            nssfcontribution.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
           nhdfcontribution = findnhdfcontribution(gross_salary);
           console.log("N.H.D.F Contribution is KES" + " " + nhdfcontribution);
           document.getElementById("displayline003").innerText =
-            nhdfcontribution.toFixed(2);
+            nhdfcontribution.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
           taxable_income = findthetaxableincome(
             gross_salary,
@@ -308,11 +308,14 @@
           );
 
           console.log("Taxable Income is KES" + " " + taxable_income);
+          console.log(typeof taxable_income)
 
           payeetax = findthepayee(taxable_income);
           console.log("Payee Tax is KES" + " " + payeetax);
-          document.getElementById("displayline004").innerText =
-            payeetax.toFixed(2);
+          document.getElementById("displayline004").innerText = payeetax.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+          console.log(typeof payeetax)
+          
 
           netsalary = findTheNetsalary(
             gross_salary,
@@ -324,9 +327,132 @@
 
           console.log("Net Salary is KES" + " " + netsalary);
           document.getElementById("displayline006").innerText =
-            netsalary.toFixed(2);
+            netsalary.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
         }
       });
     </script>
   </body>
 </html>
+<!-- ```javascript
+// Declare variables at the top
+let basicsalaryValue;
+let benefitsValue;
+let gross_salary;
+let nhifContribution;
+let nssfcontribution;
+let nhdfcontribution;
+let taxable_income;
+let payeetax;
+let netsalary;
+
+// Function to calculate gross salary
+function calculateGrossSalary(basicsalary, benefits) {
+  return (basicsalary + benefits).toFixed(2);
+}
+
+// Function to find NHIF contribution
+function findnhifcontribution(gross_salary) {
+  if (gross_salary <= 5999) return 150;
+  if (gross_salary <= 7999) return 300;
+  if (gross_salary <= 11999) return 400;
+  if (gross_salary <= 14999) return 500;
+  if (gross_salary <= 19999) return 600;
+  if (gross_salary <= 24999) return 750;
+  if (gross_salary <= 29999) return 850;
+  if (gross_salary <= 34999) return 900;
+  if (gross_salary <= 39999) return 950;
+  if (gross_salary <= 44999) return 1000;
+  if (gross_salary <= 49999) return 1100;
+  if (gross_salary <= 59999) return 1200;
+  if (gross_salary <= 69999) return 1300;
+  if (gross_salary <= 79999) return 1400;
+  if (gross_salary <= 89999) return 1500;
+  if (gross_salary <= 99999) return 1600;
+  return 1700;
+}
+
+// Function to find NSSF contribution
+function findnssfcontribution(gross_salary) {
+  return (gross_salary > 18000 ? 0.06 * 18000 : 0.06 * gross_salary).toFixed(2);
+}
+
+// Function to find NHDF contribution
+function findnhdfcontribution(gross_salary) {
+  return (gross_salary * 0.015).toFixed(2);
+}
+
+// Function to find taxable income
+function findthetaxableincome(gross_salary, nssfcontribution, nhifContribution, nhdfcontribution) {
+  return (gross_salary - (nssfcontribution + nhifContribution + nhdfcontribution));
+}
+
+// Function to find PAYE tax
+function findthepayee(taxable_income) {
+  let personal_relief = 2400;
+  if (taxable_income <= 24000) return taxable_income * 0.1 - personal_relief;
+  if (taxable_income <= 24000 + 8333) return 24000 * 0.1 + (taxable_income - 24000) * 0.25 - personal_relief;
+  if (taxable_income <= 24000 + 8333 + 467667) return 24000 * 0.1 + 8333 * 0.25 + (taxable_income - 24000 - 8333) * 0.3 - personal_relief;
+  if (taxable_income <= 24000 + 8333 + 467667 + 300000) return 24000 * 0.1 + 8333 * 0.25 + 467667 * 0.3 + (taxable_income - 24000 - 8333 - 467667) * 0.325 - personal_relief;
+  return 24000 * 0.1 + 8333 * 0.25 + 467667 * 0.3 + 300000 * 0.325 + (taxable_income - 24000 - 8333 - 467667 - 300000) * 0.35 - personal_relief;
+}
+
+// Function to find net salary
+function findTheNetsalary(gross_salary, nhdfcontribution, nhifContribution, nssfcontribution, payeetax) {
+  return gross_salary - (nssfcontribution + nhdfcontribution + nhifContribution + payeetax);
+}
+
+// Event listener for basicsalary input
+document.getElementById("basic").addEventListener("input", function (e) {
+  basicsalaryValue = parseFloat(e.target.value);
+  if (isNaN(basicsalaryValue) || basicsalaryValue === "") {
+    document.getElementById("submit").disabled = true;
+    document.getElementById("errorid").innerHTML = "Invalid Basic Salary!";
+  } else {
+    document.getElementById("errorid").innerHTML = " ";
+    document.getElementById("submit").disabled = false;
+  }
+});
+
+// Event listener for benefits input
+document.getElementById("benefits").addEventListener("input", function (e) {
+  benefitsValue = parseFloat(e.target.value);
+  if (isNaN(benefitsValue) || benefitsValue === "") {
+    document.getElementById("submit").disabled = true;
+    document.getElementById("errorid").innerHTML = "Invalid Benefits!";
+  } else {
+    document.getElementById("errorid").innerHTML = " ";
+    document.getElementById("submit").disabled = false;
+  }
+});
+
+// Event listener for form submission
+document.getElementById("formid").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  if (isNaN(basicsalaryValue) || isNaN(benefitsValue) || basicsalaryValue === "" || benefitsValue === "") {
+    document.getElementById("errorid").innerHTML = "Fill All fields!";
+  } else {
+    document.getElementById("errorid").innerHTML = "";
+    gross_salary = calculateGrossSalary(basicsalaryValue, benefitsValue);
+    document.getElementById("displayline001").innerText = gross_salary.toLocaleString('en-US');
+
+    nhifContribution = findnhifcontribution(gross_salary);
+    document.getElementById("displayline005").innerText = nhifContribution.toLocaleString('en-US');
+
+    nssfcontribution = findnssfcontribution(gross_salary);
+    document.getElementById("displayline002").innerText = nssfcontribution.toLocaleString('en-US');
+
+    nhdfcontribution = findnhdfcontribution(gross_salary);
+    document.getElementById("displayline003").innerText = nhdfcontribution.toLocaleString('en-US');
+
+    taxable_income = findthetaxableincome(gross_salary, nssfcontribution, nhifContribution, nhdfcontribution);
+
+    payeetax = findthepayee(taxable_income);
+    document.getElementById("displayline004").innerText = payeetax;
+
+    netsalary = findTheNetsalary(gross_salary, nhdfcontribution, nhifContribution, nssfcontribution, payeetax);
+    document.getElementById("displayline006").innerText = netsalary.toLocaleString('en-US');
+  }
+});
+``` -->
